@@ -22,37 +22,39 @@ const getAllTours = (req, res) => {
   });
 };
 
-// GET Request
-app.get(`/api/v1/tours`, getAllTours);
+const getTour = (req, res) => {
+  console.log(req.params);
+  const id = req.params.id * 1;
+
+  const tour = tours.find((el) => el.id === id);
+
+  if (!tour) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour
+    }
+  });
+};
 
 
-app.post(`/api/v1/tours`, (req, res) => {
-  // We don't have database yet, this is we are doing just to see how the POST request will work.
-  // We want to get the last element from the tour array to add a new one into the array.
-  // Get the ID of last element in the array
-  // and add one to it
+const createTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
-
-  // Create a new tour entry
-
-  // We have added the ID that was just created in the last step
-  // It will have other data from the req body
   const newTour = Object.assign({ id: newId }, req.body);
 
   // push this New Tour to array
   tours.push(newTour);
 
-  // write the file
-  // We cannot use synchromous write method as we are in event loop function.
-  // that will block the access to other code.
-
-  // also we send back the newly created tour
-  // 200 is for OK but 201 is for newly created element
-
   fs.writeFile(
     `${__dirname}/dev-data/data/tours-simple.json`,
     JSON.stringify(tours),
-    err => {
+    (err) => {
       res.status(201).json({
         status: 'success',
         data: {
@@ -61,7 +63,44 @@ app.post(`/api/v1/tours`, (req, res) => {
       });
     }
   );
-});
+};
+
+const updateTour = (req, res) => {
+  if(req.params.id * 1 > tours.length){
+    return res.status(404).json({
+      status: "fail",
+      message: 'Invalid Id'
+    });
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour: '<Updated tour here>'
+    }
+  });
+}
+
+const deleteTour = (req, res) => {
+  if(req.params.id * 1 > tours.length){
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID'
+    })
+  }
+  res.status(204).json({
+    status: 'success',
+    data: null
+  });
+}
+
+// GET Request
+app.get(`/api/v1/tours`, getAllTours);
+app.get(`/api/v1/tours/:id`, getTour);
+app.post(`/api/v1/tours`, createTour);
+app.patch(`/api/v1/tours/:id`, updateTour);
+app.delete(`/api/v1/tours/:id`, deleteTour);
+
 
 // Port number
 const port = 3000;
