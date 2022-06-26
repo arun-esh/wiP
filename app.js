@@ -10,8 +10,7 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
-// GET Request
-app.get(`/api/v1/tours`, (req, res) => {
+const getAllTours = (req, res) => {
   // When we have status of 200 (OK)
   res.status(200).json({
     status: `success`, // When user is successfully able to connect with the API
@@ -21,11 +20,11 @@ app.get(`/api/v1/tours`, (req, res) => {
       tours,
     },
   });
-});
+};
 
-// POST Request
+// GET Request
+app.get(`/api/v1/tours`, getAllTours);
 
-// Making changes
 
 app.post(`/api/v1/tours`, (req, res) => {
   // We don't have database yet, this is we are doing just to see how the POST request will work.
