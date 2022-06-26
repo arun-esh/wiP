@@ -5,6 +5,14 @@ const app = express();
 
 app.use(express.json());
 
+// our inital middleware
+
+app.use((req, res, next) => {
+  console.log("Hello 👋 from Middleware ⛄️");
+  next();
+}
+);
+
 // this cannot be inside the event loop function.
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
