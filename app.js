@@ -13,12 +13,24 @@ app.use((req, res, next) => {
 }
 );
 
+// Middleware function to get the Date and time of the request
+// which is applied ONLY to getAllTours function.
+
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
+
+
+
+
 // this cannot be inside the event loop function.
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
 const getAllTours = (req, res) => {
+  console.log(req.requestTime);
   // When we have status of 200 (OK)
   res.status(200).json({
     status: `success`, // When user is successfully able to connect with the API
