@@ -105,3 +105,10 @@ We never update the ID which will be taken care by the database.
 
 
 Export all these handler functions into their own function.
+
+
+
+## 3rd party middleware
+
+`npm i morgan`
+
