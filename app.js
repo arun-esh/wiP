@@ -15,7 +15,8 @@ app.use(express.json());
 // our inital middleware
 
 app.use((req, res, next) => {
-  console.log("Hello 👋 from Middleware ⛄️");
+  console.log("Hello from Middleware");
+  // console.log("Hello 👋 from Middleware ⛄️");
   next();
 }
 );
