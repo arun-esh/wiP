@@ -12,6 +12,9 @@ app.use(morgan('dev'));
 
 app.use(express.json());
 
+// serve static Files
+app.use(express.static(`${__dirname}/public/test`));
+
 // our inital middleware
 
 app.use((req, res, next) => {
