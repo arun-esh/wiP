@@ -112,3 +112,20 @@ Export all these handler functions into their own function.
 
 `npm i morgan`
 
+
+
+## Mounting Multiple Routers
+
+
+
+
+
+## Kill the process
+
+```
+sudo lsof -i :3000
+COMMAND  PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+node    5102 arunesh   25u  IPv6 0x80623a6d1d52b349      0t0  TCP *:hbci (LISTEN)
+ kill -9 5102 
+```
+
