@@ -65,6 +65,10 @@
     "utils-merge": "^1.0.1",
     "vary": "^1.1.2"
   },
+
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "scripts": {
     "start": "node server.js"
   },
