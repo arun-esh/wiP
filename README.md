@@ -133,3 +133,63 @@ exports.getAllTours = async (req, res) => {
 };
 ```
 
+### SORTING
+
+```jsx
+exports.getAllTours = async (req, res) => {
+  console.log(req.query);
+  try {
+    // BUILD QUERY
+    // destructure the query
+
+    // 1. FILTERING
+    const queryObj = { ...req.query };
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    excludedFields.forEach((el) => delete queryObj[el]);
+
+    // 2. ADVANCED FILTERING
+    let queryStr = JSON.stringify(queryObj);
+
+    // without g it will filter only first occurence
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match =>  `$${match}`);
+    console.log(JSON.parse(queryStr))
+
+
+     
+    // const query = Tour.find(queryObj);
+    // to make sure gte or lte are taken care of use this
+    let query = Tour.find(JSON.parse(queryStr));
+    // without any query it will just send  all as output
+    // with valid query it will send the filtered output
+
+    // SORTING
+    if(req.query.sort){
+      query = query.sort(req.query.sort);
+    }
+
+    // EXECUTE Query
+    const tours = await query;
+   
+    // SEND RESPONSE
+    res.status(200).json({
+      status: 'success',
+      result: tours.length,
+      data: {
+        tours,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: 'Failed',
+    });
+  }
+};
+
+
+// But if we have two collections with same price, how they are being filtered
+// We need to have a second sorting filter as well in the query for the desired results
+
+
+```
+

@@ -14,16 +14,23 @@ exports.getAllTours = async (req, res) => {
 
     // 2. ADVANCED FILTERING
     let queryStr = JSON.stringify(queryObj);
+
     // without g it will filter only first occurence
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match =>  `$${match}`);
     console.log(JSON.parse(queryStr))
 
 
-     // to make sure gte or lte are taken care of use this
+     
     // const query = Tour.find(queryObj);
-    const query = Tour.find(JSON.parse(queryStr));
+    // to make sure gte or lte are taken care of use this
+    let query = Tour.find(JSON.parse(queryStr));
     // without any query it will just send  all as output
     // with valid query it will send the filtered output
+
+    // SORTING
+    if(req.query.sort){
+      query = query.sort(req.query.sort);
+    }
 
     // EXECUTE Query
     const tours = await query;
