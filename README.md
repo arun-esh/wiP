@@ -338,27 +338,17 @@ exports.getAllTours = async (req, res) => {
 
 // to disable any field from the database, it is better to use the schema.
 
+```
 
 
 
+### Pagination
+
+```jsx
+http://localhost:3000/api/v1/tours?page=1&limit=3
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+http://localhost:3000/api/v1/tours?page=2&limit=3
 
 
 ```
