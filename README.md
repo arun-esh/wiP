@@ -254,3 +254,112 @@ exports.getAllTours = async (req, res) => {
 };
 ```
 
+
+
+### Limiting Fields
+
+```jsx
+// we want user to query for certain filters, not all
+
+// query: http://localhost:3000/api/v1/tours?fields=name,duration,difficulty,price
+
+exports.getAllTours = async (req, res) => {
+  console.log(req.query);
+  try {
+    // BUILD QUERY
+    // destructure the query
+
+    // 1. FILTERING
+    const queryObj = { ...req.query };
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    excludedFields.forEach((el) => delete queryObj[el]);
+
+    // 2. ADVANCED FILTERING
+    let queryStr = JSON.stringify(queryObj);
+
+    // without g it will filter only first occurence
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match =>  `$${match}`);
+    console.log(JSON.parse(queryStr))
+
+
+     
+    // const query = Tour.find(queryObj);
+    // to make sure gte or lte are taken care of use this
+    let query = Tour.find(JSON.parse(queryStr));
+    // without any query it will just send  all as output
+    // with valid query it will send the filtered output
+
+    // SORTING
+    if(req.query.sort){
+      const sortBy = req.query.sort.split(`,`).join(` `);
+      console.log(sortBy)
+      query = query.sort(sortBy);
+    }else{
+      // query = query.sort(`-createdAt`);
+      query = query.sort(`price`);
+    }
+
+    // 3 Field limiting
+
+    if(req.query.fields){
+      const fields = req.query.fields.split(',').join('  ');
+      //projecting
+      query = query.select(fields)
+    }else {
+      // excluding only this __v which is used by mongoose internally
+      // if you want to disable something, disable in schema
+      // select: false
+      // don't disable __v 
+      query = query.select(`-__v`);
+    }
+
+    // EXECUTE Query
+    const tours = await query;
+   
+    
+
+    
+    // SEND RESPONSE
+    res.status(200).json({
+      status: 'success',
+      result: tours.length,
+      data: {
+        tours,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: 'Failed',
+    });
+  }
+};
+
+
+// to disable any field from the database, it is better to use the schema.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+

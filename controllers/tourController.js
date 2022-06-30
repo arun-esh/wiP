@@ -37,6 +37,17 @@ exports.getAllTours = async (req, res) => {
       query = query.sort(`price`);
     }
 
+    // 3 Field limiting
+
+    if(req.query.fields){
+      const fields = req.query.fields.split(',').join('  ');
+      //projecting
+      query = query.select(fields)
+    }else {
+      // excluding only this __v which is used by mongoose internally
+      query = query.select(`-__v`);
+    }
+
     // EXECUTE Query
     const tours = await query;
    
