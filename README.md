@@ -77,3 +77,59 @@ const tours = await query;
 
 
 
+## 96. Making the API Better: Advanced Filtering
+
+For now, users can only do query with one filter `name=test`, we want to have query like greater than or less than as well.
+
+```jsx
+query
+
+http://localhost:3000/api/v1/tours?duration(gte)=5&difficult=easy
+
+http://localhost:3000/api/v1/tours?duration[gte]=5&difficulty=easy&price[lt]=1500
+
+exports.getAllTours = async (req, res) => {
+  console.log(req.query);
+  try {
+    // BUILD QUERY
+    // destructure the query
+
+    // 1. FILTERING
+    const queryObj = { ...req.query };
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    excludedFields.forEach((el) => delete queryObj[el]);
+
+    // 2. ADVANCED FILTERING
+    let queryStr = JSON.stringify(queryObj);
+    // without g it will filter only first occurence
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match =>  `$${match}`);
+    console.log(JSON.parse(queryStr))
+
+
+     // to make sure gte or lte are taken care of use this
+    // const query = Tour.find(queryObj);
+    const query = Tour.find(JSON.parse(queryStr));
+    // without any query it will just send  all as output
+    // with valid query it will send the filtered output
+
+    // EXECUTE Query
+    const tours = await query;
+   
+    
+    // SEND RESPONSE
+    res.status(200).json({
+      status: 'success',
+      result: tours.length,
+      data: {
+        tours,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: 'Failed',
+    });
+  }
+};
+```
+
