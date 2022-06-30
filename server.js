@@ -18,22 +18,6 @@ mongoose
   })
   .then(() => console.log('DB connection successful!'));
 
-// 
-// const Tour = mongoose.model('Tour', tourSchema);
-
-// const testTour = new Tour({
-//   name: 'The park View',
-//   price: 997,
-// });
-
-// testTour
-//   .save()
-//   .then((doc) => {
-//     console.log(doc);
-//   })
-//   .catch((err) => {
-//     console.log(`Error: `, err);
-//   });
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
