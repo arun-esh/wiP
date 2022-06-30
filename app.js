@@ -1,11 +1,10 @@
 const express = require(`express`);
 const morgan = require('morgan');
 
-const tourRouter = require(`./routes/tourRoutes`)
-const userRouter = require(`./routes/userRoutes`)
+const tourRouter = require(`./routes/tourRoutes`);
+const userRouter = require(`./routes/userRoutes`);
 
 const app = express();
-
 
 // (1) MIDDELWARES
 app.use(morgan('dev'));
@@ -18,11 +17,10 @@ app.use(express.static(`${__dirname}/public/test`));
 // our inital middleware
 
 app.use((req, res, next) => {
-  console.log("Hello from Middleware");
+  console.log('Hello from Middleware');
   // console.log("Hello 👋 from Middleware ⛄️");
   next();
-}
-);
+});
 
 // Middleware function to get the Date and time of the request
 // which is applied ONLY to getAllTours function.

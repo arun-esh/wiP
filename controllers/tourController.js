@@ -20,8 +20,25 @@ exports.getAllTours = async (req, res) => {
   }
 };
 
-exports.getTour = (req, res) => {
-  console.log(req.params);
+exports.getTour = async (req, res) => {
+  console.log(req.params.id);
+  try {
+    const tour = await Tour.findById(req.params.id);
+
+    res.status(200).json({
+      status: "success",
+      message: "Get One Tour: Passed",
+      data: {
+        tour
+      }
+    })
+
+  } catch (err){
+    res.status(404).json({
+      status: 'fail',
+      message: "GetOne Tour Failed"
+    })
+  }
 };
 
 exports.createTour = async (req, res) => {
