@@ -353,3 +353,28 @@ http://localhost:3000/api/v1/tours?page=2&limit=3
 
 ```
 
+
+
+### Special Route
+
+```jsx
+// alias route
+// query: http://localhost:3000/api/v1/tours/top-5-cheap
+
+// Created a new route under route folder which will point to aliasTopTours
+router.route(`/top-5-cheap`).get(tourController.aliasTopTours, tourController.getAllTours)
+
+// aliasTopTours is a middleware which will run before the getAll Tours
+// rather than writing more code for new route, we just added middleware to existing route getAllTours
+// there are know two route for getAllTours
+// if there will be any URL for /top-5-cheap, it will run the middleware first aliasTopTours 
+
+// method is under controller
+exports.aliasTopTours = (req, res, next) => {
+  req.query.limit = '5',
+  req.query.sort = '-ratingsAverage, price',
+  req.query.fields = 'name,price,ratingsAverage,summary,difficulty',
+  next();
+}
+```
+
