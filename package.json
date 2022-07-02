@@ -82,5 +82,8 @@
   "bugs": {
     "url": "https://github.com/arun-esh/wiP/issues"
   },
-  "homepage": "https://github.com/arun-esh/wiP#readme"
+  "homepage": "https://github.com/arun-esh/wiP#readme",
+  "devDependencies": {
+    "ndb": "^1.1.5"
+  }
 }
