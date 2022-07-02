@@ -144,9 +144,17 @@ exports.createTour = async (req, res) => {
       },
     });
   } catch (err) {
+    const myError = err;
+    let test = " "
+    if(myError.code == 11000){
+      errorSpec = `Duplicate Entry: ${myError.keyValue.name.toUpperCase()} already exit!`;
+      console.log(errorSpec)
+    }else{
+      errorSpec = err;
+    }
     res.status(400).json({
       status: 'fail',
-      message: err,
+      message: errorSpec,
     });
   }
 };

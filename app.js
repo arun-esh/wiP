@@ -17,8 +17,10 @@ app.use(express.static(`${__dirname}/public/test`));
 // our inital middleware
 
 app.use((req, res, next) => {
-  console.log('Hello from Middleware');
-  // console.log("Hello 👋 from Middleware ⛄️");
+  res.status(404).json({
+    status: 'fail',
+    message: `Can't fine ${req.originalUrl} on this server!`
+  })
   next();
 });
 
@@ -33,5 +35,6 @@ app.use((req, res, next) => {
 // 3) ROUTES
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+app.all('/api/v1/users', userRouter);
 
 module.exports = app;
