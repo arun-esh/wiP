@@ -1,0 +1,31 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: aquamarine;
+  margin: 1rem 2rem;
+}
+
+.header{
+  display: flex;
+  background-color: rgb(130, 135, 133);
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-img-box img  {
+  display: flex;
+  width: 10rem;
+  padding: rem;
+}
+
+.header-nav-links {
+  display: flex;
+  gap: 2rem;
+  font-size: 2rem;
+  justify-content: space-around;
+  align-items: center;
+}
